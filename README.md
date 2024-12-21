@@ -1,70 +1,173 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem de Închiriere a Echipamentelor
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Acest proiect implementează un sistem de gestionare a echipamentelor de închiriat folosind framework-ul Laravel. Aplicația permite utilizatorilor să adauge, să vizualizeze și să ștergă echipamentele disponibile pentru închiriere, iar administratorii pot vizualiza închirierile efectuate.
 
-## About Laravel
+## Arhitectura Aplicației (MVC)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Modele
+1. **Equipment**: Acest model reprezintă echipamentele care pot fi închiriate. Fiecare echipament are atribute precum `name`, `description`, `price` și `available` pentru a indica disponibilitatea.
+   
+2. **Rental**: Acest model reprezintă închirierile efectuate de utilizatori. Fiecare închiriere conține atribute precum `equipment_id`, `rental_date`, și `return_date`, care sunt legate de echipamentele disponibile.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Controlere
+1. **EquipmentController**: Acesta este responsabil pentru operațiunile CRUD legate de echipamente, inclusiv adăugarea și ștergerea echipamentelor din baza de date.
+   
+2. **RentalController**: Acesta gestionează închirierile, adică adăugarea închirierilor efectuate și vizualizarea acestora.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Vizualizări
+1. **equipments/index.blade.php**: Afișează lista echipamentelor disponibile pentru închiriere.
+   
+2. **equipments/create.blade.php**: Formular pentru adăugarea unui echipament nou în baza de date.
 
-## Learning Laravel
+3. **rentals/index.blade.php**: Afișează închirierile existente.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. **rentals/create.blade.php**: Formular pentru crearea unei închirieri de echipamente.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Schema Bazei de Date
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Tabelul `equipments`
+- `id` (INT, auto-increment)
+- `name` (VARCHAR, numele echipamentului)
+- `description` (TEXT, descrierea echipamentului)
+- `price` (DECIMAL, prețul pe zi al echipamentului)
+- `available` (BOOLEAN, disponibilitatea echipamentului)
 
-## Laravel Sponsors
+### Tabelul `rentals`
+- `id` (INT, auto-increment)
+- `equipment_id` (INT, cheie externă către `equipments`)
+- `rental_date` (DATE, data închirierii)
+- `return_date` (DATE, data returnării echipamentului)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Tipuri de Stocare a Datelor
 
-### Premium Partners
+- **Baza de date**: Baza de date MySQL este utilizată pentru stocarea echipamentelor și închirierilor.
+- **Fișiere**: Imaginile echipamentelor pot fi stocate în sistemul de fișiere local sau în cloud, folosind serviciile Laravel pentru gestionarea fișierelor.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Cache-ul Datelor
 
-## Contributing
+Aplicația poate utiliza cache-ul pentru a stoca lista echipamentelor disponibile, pentru a reduce numărul de interogări către baza de date în cazul în care numărul acestora este mare.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Stack Tehnologic
 
-## Code of Conduct
+- **Backend**: Laravel (PHP)
+- **Frontend**: Blade (templating engine), HTML
+- **Baza de date**: MySQL
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Pașii Urmați pentru Crearea Proiectului
 
-## Security Vulnerabilities
+1. **Crearea proiectului**:
+   - Am creat un nou proiect Laravel folosind comanda:
+     ```bash
+     composer create-project --prefer-dist laravel/laravel rental-system
+     ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. **Migrarea bazei de date**:
+   - Am creat migrațiile pentru tabelele `equipments` și `rentals`, utilizând comanda:
+     ```bash
+     php artisan make:migration create_equipments_table --create=equipments
+     php artisan make:migration create_rentals_table --create=rentals
+     ```
+   - Am definit relațiile dintre tabele (cheia externă între `rentals` și `equipments`).
 
-## License
+3. **Configurarea rutelor**:
+   - Am definit rutele pentru operațiile CRUD, folosind resurse în `routes/web.php`:
+     ```php
+     Route::resource('equipments', EquipmentController::class);
+     Route::resource('rentals', RentalController::class);
+     ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# Examen_Framework
->>>>>>> 6a6a0f169ebb998bc1d41e08752b82bcd23a66e6
+4. **Crearea controlerelor**:
+   - Am generat controlerele `EquipmentController` și `RentalController` folosind comanda:
+     ```bash
+     php artisan make:controller EquipmentController --resource
+     php artisan make:controller RentalController --resource
+     ```
+
+5. **Validarea datelor**:
+   - Am adăugat validare pe server în metodele `store` și `update` din controlere, folosind:
+     ```php
+     $request->validate([
+         'name' => 'required',
+         'price' => 'required|numeric',
+     ]);
+     ```
+
+6. **Crearea vizualizărilor**:
+   - Am creat vizualizările pentru listarea echipamentelor și închirierilor, precum și formulare pentru adăugarea acestora.
+
+7. **Generarea de date de test**:
+   - Am utilizat **Seeder** pentru a popula baza de date cu echipamente de test:
+     ```bash
+     php artisan make:seeder EquipmentSeeder
+     ```
+   - Am rulat comanda:
+     ```bash
+     php artisan db:seed --class=EquipmentSeeder
+     ```
+
+## Metode din Controler
+
+### `EquipmentController`
+```php
+public function index()
+{
+    $equipments = Equipment::all();
+    return view('equipments.index', compact('equipments'));
+}
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+    ]);
+    
+    Equipment::create($validated);
+    return redirect()->route('equipments.index');
+}
+
+public function destroy($id)
+{
+    $equipment = Equipment::findOrFail($id);
+    $equipment->delete();
+    return redirect()->route('equipments.index');
+}
+```
+### RentalController
+
+```php
+public function store(Request $request) {
+    $validated = $request->validate([
+        'equipment_id' => 'required|exists:equipments,id',
+        'rental_date' => 'required|date',
+    ]);
+
+    Rental::create($validated);
+    return redirect()->route('rentals.index');
+}
+```
+
+### Vizualizări HTML pentru Formularul de Adăugare a Datelor
+```php
+<form action="{{ route('equipments.store') }}" method="POST">
+    @csrf
+    <label for="name">Nume:</label>
+    <input type="text" name="name" required>
+    <label for="price">Preț:</label>
+    <input type="number" name="price" required>
+    <button type="submit">Salvează</button>
+</form>
+```
+### Rutele Definite în Aplicație
+```php
+Route::resource('equipments', EquipmentController::class);
+Route::resource('rentals', RentalController::class);
+
+```
+
+### Rutele Definite în Aplicație
+```php
+Route::resource('equipments', EquipmentController::class);
+Route::resource('rentals', RentalController::class);
+
+```
